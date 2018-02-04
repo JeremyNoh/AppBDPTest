@@ -154,9 +154,39 @@ var HomePage = (function () {
         });
         // fin get api
     };
+    HomePage.prototype.SavePrence = function (item) {
+        var _this = this;
+        var resVisiteur = this.results[this.tableau.indexOf(item)];
+        var id = resVisiteur.id;
+        console.log(id);
+        var url = "https://api.airtable.com/v0/appRzgYd2sozz8l2P/personne/" + id + "?api_key=keyAER9NsfEje3klJ";
+        this.funLoading();
+        this.http.patch(url, { "fields": { "Valide": "True" } })
+            .subscribe(function (val) {
+            console.log("PUT call successful value returned in body", val);
+        }, function (response) {
+            console.log("PUT call in error", response);
+        }, function () {
+            var alert = _this.alertCtrl.create({
+                title: 'Visiteur Enregistrer',
+                subTitle: 'Visiteur Enregistrer !!',
+                buttons: ['Fermer']
+            });
+            alert.present();
+        });
+    };
+    HomePage.prototype.funLoading = function () {
+        var loading = this.loadingCtrl.create({
+            content: 'Please wait...'
+        });
+        loading.present();
+        setTimeout(function () {
+            loading.dismiss();
+        }, 1000);
+    };
     HomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-home',template:/*ion-inline-start:"/Users/jeremynoh/Desktop/projet/AppBDP/src/pages/home/home.html"*/'<ion-header>\n  <ion-navbar color="primary">\n    <ion-title>\n      Home\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n  <!-- refresh -->\n  <ion-refresher (ionRefresh)="doRefresh($event)">\n    <ion-refresher-content\n      pullingIcon="arrow-dropdown"\n      pullingText="Pull to refresh"\n      refreshingSpinner="circles"\n      refreshingText="Refreshing...">\n    </ion-refresher-content>\n  </ion-refresher>\n  <!-- fin refresh -->\n  <ion-fab top right edge color="secondary">\n    <button ion-fab  (tap)="refresh()" color="light"><ion-icon name="ribbon" ></ion-icon></button>\n  </ion-fab>\n  bienvenu sur L\'Appli de Bal de Promo\n  <p>\n    <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>\n  </p>\n  <ion-item *ngFor="let item of items; "  (click)="goToOtherPage(item)">\n      {{ item }}\n\n  </ion-item>\n</ion-content>\n\n<ion-footer>\n  <ion-toolbar>\n    <ion-title><p>{{VisiteurPresent}}/{{VisiteurInscrit}}  Présent</p></ion-title>\n  </ion-toolbar>\n</ion-footer>\n\n<!--   bottom right   -->\n'/*ion-inline-end:"/Users/jeremynoh/Desktop/projet/AppBDP/src/pages/home/home.html"*/
+            selector: 'page-home',template:/*ion-inline-start:"/Users/jeremynoh/Desktop/projet/AppBDP/src/pages/home/home.html"*/'<ion-header>\n  <ion-navbar color="primary">\n    <ion-title>\n      Home\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n  <!-- refresh -->\n  <ion-refresher (ionRefresh)="doRefresh($event)">\n    <ion-refresher-content\n      pullingIcon="arrow-dropdown"\n      pullingText="Pull to refresh"\n      refreshingSpinner="circles"\n      refreshingText="Refreshing...">\n    </ion-refresher-content>\n  </ion-refresher>\n  <!-- fin refresh -->\n  <ion-fab top right edge color="secondary">\n    <button ion-fab  (tap)="refresh()" color="light"><ion-icon name="ribbon" ></ion-icon></button>\n  </ion-fab>\n  bienvenu sur L\'Appli de Bal de Promo\n  <p>\n    <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>\n  </p>\n\n  <ion-list>\n    <ion-item-sliding *ngFor="let item of items;" >\n      <ion-item  (tap)="goToOtherPage(item)">\n        {{ item }}\n      </ion-item>\n      <ion-item-options side="left">\n        <button ion-button color="secondary" (tap)="SavePrence(item)">Save</button>\n      </ion-item-options>\n    </ion-item-sliding>\n  </ion-list>\n  <!-- Ancienne version -->\n  <!-- <ion-item *ngFor="let item of items; "  (click)="goToOtherPage(item)">\n      {{ item }}\n  </ion-item> -->\n</ion-content>\n\n<ion-footer>\n  <ion-toolbar>\n    <ion-title><p>{{VisiteurPresent}}/{{VisiteurInscrit}}  Présent</p></ion-title>\n  </ion-toolbar>\n</ion-footer>\n\n<!--   bottom right   -->\n'/*ion-inline-end:"/Users/jeremynoh/Desktop/projet/AppBDP/src/pages/home/home.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */], __WEBPACK_IMPORTED_MODULE_3__angular_common_http__["a" /* HttpClient */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* LoadingController */]])
     ], HomePage);
