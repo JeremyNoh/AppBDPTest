@@ -225,7 +225,7 @@ var ProfilPage = (function () {
         //   // https://api.airtable.com/v0/appRzgYd2sozz8l2P/personne?api_key=keyAER9NsfEje3klJ
         var url = "https://api.airtable.com/v0/appRzgYd2sozz8l2P/personne/" + this.id + "?api_key=keyAER9NsfEje3klJ";
         this.funLoading();
-        this.http.put(url, { "fields": { "id": this.fields.id, "Prenom": this.fields.Prenom, "BTS": this.fields.BTS, "Valide": this.fields.Valide, "Boisson": this.fields.Boisson - 1, "Nom": this.fields.Nom } })
+        this.http.patch(url, { "fields": { "Boisson": this.fields.Boisson - 1 } })
             .subscribe(function (val) {
             console.log("PUT call successful value returned in body", val);
         }, function (response) {
@@ -246,7 +246,7 @@ var ProfilPage = (function () {
         // test
         this.funLoading();
         // fin test
-        this.http.put(url, { "fields": { "id": this.fields.id, "Prenom": this.fields.Prenom, "BTS": this.fields.BTS, "Valide": this.fields.Valide, "Boisson": this.fields.Boisson + 1, "Nom": this.fields.Nom } })
+        this.http.patch(url, { "fields": { "Boisson": this.fields.Boisson + 1 } })
             .subscribe(function (val) {
             // test
             // let loading = this.loadingCtrl.create({
@@ -267,7 +267,7 @@ var ProfilPage = (function () {
             _this.fields.Boisson = _this.fields.Boisson + 1;
             var alert = _this.alertCtrl.create({
                 title: 'Modification des Boissons',
-                subTitle: 'Une Boison a bien été retiré!!',
+                subTitle: 'Une Boison a bien été ajouté!!',
                 buttons: ['Fermer']
             });
             alert.present();
@@ -279,7 +279,7 @@ var ProfilPage = (function () {
         var _this = this;
         var url = "https://api.airtable.com/v0/appRzgYd2sozz8l2P/personne/" + this.id + "?api_key=keyAER9NsfEje3klJ";
         this.funLoading();
-        this.http.put(url, { "fields": { "id": this.fields.id, "Prenom": this.fields.Prenom, "BTS": this.fields.BTS, "Valide": "True", "Boisson": this.fields.Boisson, "Nom": this.fields.Nom } })
+        this.http.patch(url, { "fields": { "Valide": "True" } })
             .subscribe(function (val) {
             console.log("PUT call successful value returned in body", val);
         }, function (response) {
@@ -298,7 +298,7 @@ var ProfilPage = (function () {
         var _this = this;
         var url = "https://api.airtable.com/v0/appRzgYd2sozz8l2P/personne/" + this.id + "?api_key=keyAER9NsfEje3klJ";
         this.funLoading();
-        this.http.put(url, { "fields": { "id": this.fields.id, "Prenom": this.fields.Prenom, "BTS": this.fields.BTS, "Valide": "False", "Boisson": this.fields.Boisson, "Nom": this.fields.Nom } })
+        this.http.patch(url, { "fields": { "Valide": "False" } })
             .subscribe(function (val) {
             console.log("PUT call successful value returned in body", val);
         }, function (response) {
@@ -318,7 +318,7 @@ var ProfilPage = (function () {
         console.log(this.Vestiaire);
         var url = "https://api.airtable.com/v0/appRzgYd2sozz8l2P/personne/" + this.id + "?api_key=keyAER9NsfEje3klJ";
         this.funLoading();
-        this.http.put(url, { "fields": { "id": this.fields.id, "Prenom": this.fields.Prenom, "BTS": this.fields.BTS, "Valide": this.fields.Valide, "Boisson": this.fields.Boisson, "Nom": this.fields.Nom, "Vestiaire": this.Vestiaire } })
+        this.http.patch(url, { "fields": { "Vestiaire": this.Vestiaire } })
             .subscribe(function (val) {
             console.log("PUT call successful value returned in body", val);
         }, function (response) {
