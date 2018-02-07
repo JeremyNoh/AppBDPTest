@@ -65,7 +65,6 @@ var HomePage = (function () {
     // Inject HttpClient into your component or service.
     function HomePage(navCtrl, navParams, http, alertCtrl, loadingCtrl) {
         // this.initializeItems();
-        var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.http = http;
@@ -79,15 +78,9 @@ var HomePage = (function () {
         this.tableauValide = [];
         this.VisiteurPresent = 0;
         this.VisiteurInscrit = '';
-        this.tabVal = [];
-        this.HEROES = [
-            { id: 1, name: 'Superman' },
-            { id: 2, name: 'Batman' },
-            { id: 5, name: 'BatGirl' },
-            { id: 3, name: 'Robin' },
-            { id: 4, name: 'Flash' }
-        ];
-        // get api
+    }
+    HomePage.prototype.ionViewWillEnter = function () {
+        var _this = this;
         this.http.get('https://api.airtable.com/v0/appRzgYd2sozz8l2P/personne/?api_key=keyAER9NsfEje3klJ').subscribe(function (data) {
             _this.results = [];
             _this.tableau = [];
@@ -103,8 +96,7 @@ var HomePage = (function () {
             // compte le nombre d'inscrit
             _this.VisiteurInscrit = _this.results.length;
         });
-        // fin get api
-    }
+    };
     HomePage.prototype.initializeItems = function () {
         //  this.items = [
         //    "Jeremy Nohile",
