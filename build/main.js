@@ -79,6 +79,14 @@ var HomePage = (function () {
         this.tableauValide = [];
         this.VisiteurPresent = 0;
         this.VisiteurInscrit = '';
+        this.tabVal = [];
+        this.HEROES = [
+            { id: 1, name: 'Superman' },
+            { id: 2, name: 'Batman' },
+            { id: 5, name: 'BatGirl' },
+            { id: 3, name: 'Robin' },
+            { id: 4, name: 'Flash' }
+        ];
         // get api
         this.http.get('https://api.airtable.com/v0/appRzgYd2sozz8l2P/personne/?api_key=keyAER9NsfEje3klJ').subscribe(function (data) {
             _this.results = [];
@@ -110,7 +118,6 @@ var HomePage = (function () {
         //  ];
         this.items = this.tableau;
     };
-    // debut test
     HomePage.prototype.getItems = function (ev) {
         // Reset items back to all of the items
         this.initializeItems();
@@ -186,7 +193,7 @@ var HomePage = (function () {
     };
     HomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-home',template:/*ion-inline-start:"/Users/jeremynoh/Desktop/projet/AppBDP/src/pages/home/home.html"*/'<ion-header>\n  <ion-navbar color="primary">\n    <ion-title>\n      Home\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n  <!-- refresh -->\n  <ion-refresher (ionRefresh)="doRefresh($event)">\n    <ion-refresher-content\n      pullingIcon="arrow-dropdown"\n      pullingText="Pull to refresh"\n      refreshingSpinner="circles"\n      refreshingText="Refreshing...">\n    </ion-refresher-content>\n  </ion-refresher>\n  <!-- fin refresh -->\n  <ion-fab top right edge color="secondary">\n    <button ion-fab  (tap)="refresh()" color="light"><ion-icon name="ribbon" ></ion-icon></button>\n  </ion-fab>\n  bienvenu sur L\'Appli de Bal de Promo\n  <p>\n    <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>\n  </p>\n\n  <ion-list>\n    <ion-item-sliding *ngFor="let item of items;" >\n      <ion-item  (tap)="goToOtherPage(item)">\n        {{ item }}\n        <!-- <ion-icon   item-end color= "secondary" name="checkmark-circle"></ion-icon> -->\n\n      </ion-item>\n      <ion-item-options side="left">\n        <button ion-button color="secondary" (tap)="SavePrence(item)">Save</button>\n      </ion-item-options>\n    </ion-item-sliding>\n  </ion-list>\n  <!-- Ancienne version -->\n  <!-- <ion-item *ngFor="let item of items; "  (click)="goToOtherPage(item)">\n      {{ item }}\n  </ion-item> -->\n</ion-content>\n\n<ion-footer>\n  <ion-toolbar>\n    <ion-title><p>{{VisiteurPresent}}/{{VisiteurInscrit}}  Présent</p></ion-title>\n  </ion-toolbar>\n</ion-footer>\n\n<!--   bottom right   -->\n'/*ion-inline-end:"/Users/jeremynoh/Desktop/projet/AppBDP/src/pages/home/home.html"*/
+            selector: 'page-home',template:/*ion-inline-start:"/Users/jeremynoh/Desktop/projet/AppBDP/src/pages/home/home.html"*/'<ion-header>\n  <ion-navbar color="primary">\n    <ion-title>\n      Bal de Promo\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n  <!-- refresh -->\n  <ion-refresher (ionRefresh)="doRefresh($event)">\n    <ion-refresher-content\n      pullingIcon="arrow-dropdown"\n      pullingText="Pull to refresh"\n      refreshingSpinner="circles"\n      refreshingText="Refreshing...">\n    </ion-refresher-content>\n  </ion-refresher>\n  <!-- fin refresh -->\n  <ion-fab top right edge color="secondary">\n    <button ion-fab  (tap)="refresh()" color="light"><ion-icon name="ribbon" ></ion-icon></button>\n  </ion-fab>\n  bienvenu sur L\'Appli de Bal de Promo\n  <p>\n    <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>\n  </p>\n\n\n  <ion-list>\n    <ion-item-sliding *ngFor="let item of items; " >\n      <ion-item  (tap)="goToOtherPage(item)">\n        {{ item }}\n        <!-- <ion-icon   item-end color= "secondary" name="checkmark-circle"></ion-icon> -->\n        <!-- *ngIf="fields.Valide === \'False\'" -->\n      </ion-item>\n      <ion-item-options side="left">\n        <button ion-button color="secondary" (tap)="SavePrence(item)">Save</button>\n      </ion-item-options>\n    </ion-item-sliding>\n  </ion-list>\n  <!-- Ancienne version -->\n  <!-- <ion-item *ngFor="let item of items; "  (click)="goToOtherPage(item)">\n      {{ item }}\n  </ion-item> -->\n</ion-content>\n\n<ion-footer>\n  <ion-toolbar>\n    <ion-title><p>{{VisiteurPresent}}/{{VisiteurInscrit}}  Présent</p></ion-title>\n  </ion-toolbar>\n</ion-footer>\n\n<!--   bottom right   -->\n'/*ion-inline-end:"/Users/jeremynoh/Desktop/projet/AppBDP/src/pages/home/home.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */], __WEBPACK_IMPORTED_MODULE_3__angular_common_http__["a" /* HttpClient */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* LoadingController */]])
     ], HomePage);
@@ -222,6 +229,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var ProfilPage = (function () {
+    // nbrVestiaire = fields.Vestiaire.length : 0;
+    // nbrVestiaire = fields.Vestiaire.length || 0;
     function ProfilPage(navCtrl, navParams, http, alertCtrl, loadingCtrl) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
@@ -234,10 +243,19 @@ var ProfilPage = (function () {
         this.isValid = this.fields.Valide;
         // Vestiaire = undefined ;
         this.Vestiaire = this.fields.Vestiaire;
+        this.nbrVestiaire = 0;
+        this.nbrVestiaireFun();
     }
     ProfilPage.prototype.ionViewDidLoad = function () {
         console.log(this.fields);
-        console.log(this.fields.Vestiaire);
+    };
+    ProfilPage.prototype.nbrVestiaireFun = function () {
+        if (this.Vestiaire === undefined) {
+            this.nbrVestiaire = 0;
+        }
+        else {
+            this.nbrVestiaire = this.fields.Vestiaire.length;
+        }
     };
     ProfilPage.prototype.funLoading = function () {
         var loading = this.loadingCtrl.create({
@@ -317,7 +335,7 @@ var ProfilPage = (function () {
         }, function () {
             _this.fields.Valide = "True";
             var alert = _this.alertCtrl.create({
-                title: 'Visiteur Enregistrer',
+                title: ' Modification Visiteur ',
                 subTitle: 'Visiteur Enregistrer !!',
                 buttons: ['Fermer']
             });
@@ -336,7 +354,7 @@ var ProfilPage = (function () {
         }, function () {
             _this.fields.Valide = "False";
             var alert = _this.alertCtrl.create({
-                title: 'Visiteur Annuler',
+                title: 'Modification Visiteur',
                 subTitle: 'Visiteur Retirer  !!',
                 buttons: ['Fermer']
             });
@@ -355,6 +373,7 @@ var ProfilPage = (function () {
             console.log("PUT call in error", response);
         }, function () {
             _this.fields.Vestiaire = _this.Vestiaire;
+            _this.nbrVestiaire = _this.fields.Vestiaire.length;
             var alert = _this.alertCtrl.create({
                 title: 'Modification Vestiaire',
                 subTitle: 'le Visiteur a charger son Vestiaire',
@@ -364,11 +383,19 @@ var ProfilPage = (function () {
         });
         // fin saveVestiaire
     };
+    ProfilPage.prototype.errorBoison = function () {
+        var alert = this.alertCtrl.create({
+            title: 'Quota Boisson Visiteur',
+            subTitle: 'quota de Boisson insuffiante ',
+            buttons: ['Fermer']
+        });
+        alert.present();
+    };
     ProfilPage.prototype.refresh = function () {
     };
     ProfilPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-profil',template:/*ion-inline-start:"/Users/jeremynoh/Desktop/projet/AppBDP/src/pages/profil/profil.html"*/'\n<ion-header color="primary">\n\n  <ion-navbar color="primary">\n    <ion-title>profil</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n\n  <ion-fab top right edge color="secondary">\n    <button ion-fab  (tap)="refresh()" color="light"><ion-icon name="ribbon" ></ion-icon></button>\n    <!-- <ion-img width="80" height="80" src="../../assets/imgs/cocktail.png"></ion-img> -->\n    <!-- <button ion-fab  (tap)="refresh()" color="light" ><ion-icon  ></ion-icon></button>  -->\n  </ion-fab>\n\n  <ion-card>\n  <ion-item>\n\n    <h2>{{fields.Prenom}} {{fields.Nom}}</h2>\n    <p>{{fields.BTS}}</p>\n\n\n\n  <ion-card-content>\n    <p>L\'id est le : {{fields.id}} </p>\n  </ion-card-content>\n  <ion-col center text-center>\n      <ion-icon name="ice-cream"></ion-icon> Nombre de Boisson : {{fields.Boisson}}\n  </ion-col>\n  <ion-row>\n    <ion-col>\n      <button ion-button icon-left clear small (tap)="UpDrink()">\n        <ion-icon name="thumbs-up"></ion-icon>\n        <div>Up </div>\n      </button>\n    </ion-col>\n    <ion-col>\n      <button ion-button icon-left clear small (tap)="DownDrink()">\n        <ion-icon name="thumbs-down"></ion-icon>\n        <div> Down</div>\n      </button>\n    </ion-col>\n\n      <button ion-button icon-start outline (tap)="SavePrence()" *ngIf="fields.Valide === \'False\'">\n        <ion-icon name="star"></ion-icon>\n        Enresgister sa présence\n      </button>\n\n\n      <button ion-button icon-start outline color ="secondary"  (tap)="UnSavePrence()" *ngIf="fields.Valide === \'True\'" >\n        <ion-icon name="checkmark-circle"></ion-icon>\n        Enresgister\n      </button>\n\n\n  </ion-row>\n</ion-item>\n</ion-card>\n\n<br><br>\n<ion-card>\n\n<ion-list>\n  <ion-item>\n    <ion-label>Vestiaire : </ion-label>\n    <ion-select [(ngModel)]="Vestiaire" multiple="true" cancelText="Nah" okText="Valider!" ionCancel="saveVestiaire()" >\n      <ion-option value="Veste" >Veste</ion-option>\n      <ion-option value="Sac">Sac</ion-option>\n      <ion-option value="Chapeau" >Chapeau</ion-option>\n      <ion-option value="Echarpe">Echarpe</ion-option>\n      <ion-option value="Accessoire">Accessoire</ion-option>\n      <ion-option value="Parapluie">Parapluie</ion-option>\n      <!-- <ion-option value="Autres">Autres..</ion-option> -->\n    </ion-select>\n  </ion-item>\n</ion-list>\n<p>{{Vestiaire}}</p>\n<button ion-button icon-left clear small (tap)="saveVestiaire()">\n  <ion-icon name="shirt"></ion-icon>\n  <div> Valider</div>\n</button>\n</ion-card>\n</ion-content>\n\n<!-- *ngIf="fields.Boisson == \'False\'" -->\n'/*ion-inline-end:"/Users/jeremynoh/Desktop/projet/AppBDP/src/pages/profil/profil.html"*/,
+            selector: 'page-profil',template:/*ion-inline-start:"/Users/jeremynoh/Desktop/projet/AppBDP/src/pages/profil/profil.html"*/'\n<ion-header color="primary">\n\n  <ion-navbar color="primary">\n    <ion-title>{{fields.Prenom}} {{fields.Nom}}</ion-title>\n    {{fields.BTS}}\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding  text-center>\n\n  <ion-fab top right edge color="secondary">\n    <button ion-fab  (tap)="refresh()" color="light">{{fields.id}}</button>\n  </ion-fab>\n\n\n\n  <ion-card>\n\n    <ion-card-header>\n      <ion-icon name="wine"></ion-icon> Boisson : {{fields.Boisson}}\n    </ion-card-header>\n  <br>\n\n    <ion-card-content>\n      <ion-col>\n        <button ion-button icon-left  small (tap)="UpDrink()">\n          <ion-icon name="add-circle"></ion-icon>\n          <div>Up </div>\n        </button>\n      </ion-col>\n      <ion-col>\n        <button ion-button icon-left  small (tap)="DownDrink()" *ngIf="fields.Boisson > 0 " >\n          <ion-icon name="remove-circle"></ion-icon>\n          <div> Down</div>\n        </button>\n        <button ion-button icon-left  small color="danger" (tap)="errorBoison()" *ngIf="fields.Boisson <= 0 "  >\n          <ion-icon name="close-circle"></ion-icon>\n          <div> Quota Indisponible</div>\n        </button>\n      </ion-col>\n    </ion-card-content>\n\n  </ion-card>\n  <br>\n\n\n  <ion-card>\n    <ion-card-header style="background-color: \'#dedede96\';">\n      <ion-icon name="shirt"></ion-icon> Vestiaire : {{nbrVestiaire}}\n    </ion-card-header>\n\n  <ion-list>\n\n      <ion-item>\n        <ion-label>Choississez : </ion-label>\n        <ion-select [(ngModel)]="Vestiaire" multiple="true" cancelText="Nah" okText="Valider!" ionCancel="saveVestiaire()"  selectedText = " " placeholder=" " >\n          <ion-option value="Veste" >Veste</ion-option>\n          <ion-option value="Sac">Sac</ion-option>\n          <ion-option value="Chapeau" >Chapeau</ion-option>\n          <ion-option value="Echarpe">Echarpe</ion-option>\n          <ion-option value="Accessoire">Accessoire</ion-option>\n          <ion-option value="Parapluie">Parapluie</ion-option>\n          <!-- <ion-option value="Autres">Autres..</ion-option> -->\n        </ion-select>\n      </ion-item>\n    </ion-list>\n    <ion-item-divider *ngFor="let item of Vestiaire; " >\n      {{item}}\n    </ion-item-divider>\n\n    <!-- <ion-item>Argentina</ion-item> -->\n\n    <button ion-button icon-left  small (tap)="saveVestiaire()">\n      <div> Valider</div>\n    </button>\n  </ion-card>\n  <br>\n\n    <button  ion-button  outline (tap)="SavePrence()" *ngIf="fields.Valide === \'False\'">\n      <ion-icon name="star"></ion-icon>\n      Enregistrer sa présence\n    </button>\n    <!-- clear; thumbs-up; -->\n\n    <button  ion-button icon-only outline  color ="secondary"  (tap)="UnSavePrence()" *ngIf="fields.Valide === \'True\'" >\n      <ion-icon name="checkmark-circle"></ion-icon>\n      Visiteur Enregistrer !!\n    </button>\n\n\n</ion-content>\n\n<!-- *ngIf="fields.Boisson == \'False\'" -->\n'/*ion-inline-end:"/Users/jeremynoh/Desktop/projet/AppBDP/src/pages/profil/profil.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["a" /* HttpClient */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* LoadingController */]])
     ], ProfilPage);
